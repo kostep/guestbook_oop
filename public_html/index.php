@@ -2,7 +2,9 @@
 include_once('header.html');
 
 include_once(dirname(__FILE__).'\..\sys\core\init.inc.php');
-
+///
+/// Тестовая сторка
+///
 
 /*
 $current_page=$_GET['page'];
