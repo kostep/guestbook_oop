@@ -1,6 +1,24 @@
 <?php
 
 
+// This if(!function_exists('__autoload')) is needed for test purposes. Testing each class separately, when init.inc.php
+// is not included.
+
+if(!function_exists('__autoload'))
+{
+    function __autoload($class)
+    {
+
+        $filename=dirname(__FILE__).'\..\class\class.'.$class.'.inc.php';
+
+        if(file_exists($filename))
+        {
+            include_once($filename);
+        }
+    }
+}
+
+
 /**
  * Class that connects us to the database
  *

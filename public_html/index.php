@@ -2,18 +2,16 @@
 include_once('header.html');
 
 include_once(dirname(__FILE__).'\..\sys\core\init.inc.php');
-///
-/// Тестовая сторка
-///
 
-/*
-$current_page=$_GET['page'];
-$sort_type=$_GET['sort_type'];
-$sort_order=$_GET['sort_order'];
-*/
+if(isset($_POST['username']))
+{
+    echo $_POST['username'];
+}
+
+
 
 if(!empty($_GET['current_page'])) {$current_page=$_GET['current_page'];} else {$current_page=0;}
-if(!empty($_GET['sort_type'])) {$sort_type=$_GET['sort_type'];} else {$sort_type='timedate';}
+if(!empty($_GET['sort_type'])) {$sort_type=$_GET['sort_type'];} else {$sort_type='time_and_date';}
 if(!empty($_GET['sort_order'])) {$sort_order=$_GET['sort_order'];} else {$sort_order='DESC';}
 
 
@@ -35,7 +33,7 @@ foreach($special_array as $key=>$value)
                 <p class="username"><span class="username_title">Автор: </span>'.$value['username'].'</p>
                 <p class="email"><span class="email_title">Почта: </span>'.$value['email'].'</p>
                 <p class="site"><span class="site_title">Сайт: </span><a href="http://yandex.ru">'.$value['homepage'].'</a></p>
-                <p class="entry_date"><span class="entry_date_title">Отправлено: </span>'.$value['timedate'].'</p>
+                <p class="entry_date"><span class="entry_date_title">Отправлено: </span>'.$value['time_and_date'].'</p>
             </div>
             <div class="entry_right">
                 <p class="entry_text_title">Сообщение:</p> <p class="entry_text">'.nl2br($value['text']).'</p>
@@ -47,7 +45,7 @@ echo'
 
 
         <p class="links">
-            <a href="index.php?sort_order=DESC&sort_type=timedate&current_page='.$guestbook->current_page.'">убыв</a>| дата |<a href="index.php?sort_order=ASC&sort_type=timedate&current_page='.$guestbook->current_page.'">возр</a>
+            <a href="index.php?sort_order=DESC&sort_type=time_and_date&current_page='.$guestbook->current_page.'">убыв</a>| дата |<a href="index.php?sort_order=ASC&sort_type=time_and_date&current_page='.$guestbook->current_page.'">возр</a>
             <a href="index.php?sort_order=DESC&sort_type=username&current_page='.$guestbook->current_page.'">убыв</a>| имя |<a href="index.php?sort_order=ASC&sort_type=username&current_page='.$guestbook->current_page.'">возр</a>
             <a href="index.php?sort_order=DESC&sort_type=email&current_page='.$guestbook->current_page.'">убыв</a>| email |<a href="index.php?sort_order=ASC&sort_type=email&current_page='.$guestbook->current_page.'">возр</a>
             </br></br>
@@ -72,49 +70,32 @@ echo'
 ';
 
 echo'
- <!--
+
     <div id="under">
         <div id="error_box">
+        
+        
+        
+        
         <span class="error_text">
+        '.$guestbook->entry_form_errors.'
+        <!--
             Ошибка,раз! <br>
             Ошибка, два!<br>
             Ошибка, три! <br>
             Ошибка, четыре!<br>
             Ошибка, пять!<br>
+        !-->
         </span>
+        
         </div>
+';
 
-        <div id="form_entry">
-            <form class="form_one">
-            <div class="form_inner_box">
-                <div class="form_left_box"><span class="form_title">Введите имя/псевдоним<span class="red_color">*</span>:</span></div>
-                <div class="form_right_box"><input type="text" size="40" maxlength="100"></input></div>
-            </div>
-            <div class="form_inner_box">
-                <div class="form_left_box"><span class="form_title">Введите email<span class="red_color">*</span>:</span></div>
-                <div class="form_right_box"><input type="text" size="40" maxlength="100"></input></div>
-            </div>
-            <div class="form_inner_box">
-                <div class="form_left_box"><span class="form_title">Введите Ваш сайт:</span></div>
-                <div class="form_right_box"><input type="text" size="40" maxlength="100"></input></div>
-            </div>
-            <div class="form_inner_textarea_box">
-                <div class="form_left_box"><span class="form_title">Введите текст сообщения<span class="red_color">*</span>:</span></div>
-                <div class="form_textarea_box"><textarea style="width: 80%; height: 80%; resize: none;"></textarea></div>
-            </div>
-            <div class="form_inner_box">
-                <div class="form_left_box"><span class="form_title">Введите каптчу<span class="red_color">*</span>:</span></div>
-                <div class="form_captcha_text_box"><input type="text" size="20" maxlength="20"></input></div>
-                <div class="form_captcha_image_box"><img src="captcha.php"></div>
-            </div>
-            <div class="form_inner_box">
-                <div class="form_button_box"><button  class="button_style_1" type="submit">Отправить сообщение</button></div>
-            </div>
-            </form>
-        </div>
+echo $guestbook->entry_form();
 
+echo'
     </div>
- -->
+
 ';
 
 

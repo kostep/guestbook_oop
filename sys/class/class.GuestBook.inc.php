@@ -1,4 +1,24 @@
 <?php
+
+// This if(!function_exists('__autoload')) is needed for test purposes. Testing each class separately, when init.inc.php
+// is not included.
+
+if(!function_exists('__autoload'))
+{
+    function __autoload($class)
+    {
+
+        $filename=dirname(__FILE__).'\..\class\class.'.$class.'.inc.php';
+
+        if(file_exists($filename))
+        {
+            include_once($filename);
+        }
+    }
+}
+
+
+
 /**
  * Class GuestBook . Literally(ha-ha) ;) my main class.  Allows to show and edit my site's guestbook
  *
@@ -6,6 +26,7 @@
  * @copyright  Stephan aka Loremaster 2018
  * @license  GNU PL
  */
+
 
 class GuestBook extends DbConnect {
 
@@ -99,6 +120,13 @@ class GuestBook extends DbConnect {
     public $current_offset;
 
     /**
+     * Property that saves error mesage from entry form to show it on sitepage
+     * @var string A string
+     */
+    public $entry_form_errors;
+
+
+    /**
      *
      * This method takes database object
      *
@@ -113,7 +141,7 @@ class GuestBook extends DbConnect {
 
             0=>'username',
             1=>'email',
-            2=>'timedate'
+            2=>'time_and_date'
 
         );
 
@@ -127,14 +155,17 @@ class GuestBook extends DbConnect {
         $this->sort_order='DESC';
 
         // Defining default value for $sort_type
-        $this->sort_type='timedate';
+        $this->sort_type='time_and_date';
 
         // Defining default value for $current_page
         $this->current_page='0';
 
+        // Defining default error message
+        $this->entry_form_errors='';
+
 
         // Defining total amount of entries in database table guestbook_entry
-        $this->total_count=$db->query('SELECT count(*) FROM guestbook_entry')->fetchColumn(0);
+        $this->total_count=$db->query('SELECT count(*) FROM guestbook_entries')->fetchColumn(0);
 
 
 
@@ -215,8 +246,48 @@ class GuestBook extends DbConnect {
         // Making database request to get fields for entries to show on page. Fetching it into ASSOC array after.
         // And assigning result to $this->page_array
         $this->page_array=$this->db->
-        query('SELECT username, email, homepage, timedate, text FROM guestbook_entry  ORDER BY '.$this->sort_type.' '.$this->sort_order.'  LIMIT '.$this->current_offset.' , '.ENTRIES_ON_PAGE)->fetchAll(PDO::FETCH_ASSOC);
+        query('SELECT username, email, homesite, time_and_date, text FROM guestbook_entries  ORDER BY '.$this->sort_type.' '.$this->sort_order.'  LIMIT '.$this->current_offset.' , '.ENTRIES_ON_PAGE)->fetchAll(PDO::FETCH_ASSOC);
 
         return $this->page_array;
+    }
+    /**
+     *
+     * This shows entry input form, makes error_check and send data to database
+     *
+     * @param
+     */
+    public function entry_form()
+    {
+        $html='
+        <div id="form_entry">
+            <form class="form_one" action="index.php" method="post">
+            <div class="form_inner_box">
+                <div class="form_left_box"><span class="form_title">Введите имя/псевдоним<span class="red_color">*</span>:</span></div>
+                <div class="form_right_box"><input name="username" type="text" size="40" maxlength="100"></input></div>
+            </div>
+            <div class="form_inner_box">
+                <div class="form_left_box"><span class="form_title">Введите email<span class="red_color">*</span>:</span></div>
+                <div class="form_right_box"><input name="email" type="text" size="40" maxlength="100"></input></div>
+            </div>
+            <div class="form_inner_box">
+                <div class="form_left_box"><span class="form_title">Введите Ваш сайт:</span></div>
+                <div class="form_right_box"><input name="homesite" type="text" size="40" maxlength="100"></input></div>
+            </div>
+            <div class="form_inner_textarea_box">
+                <div class="form_left_box"><span class="form_title">Введите текст сообщения<span class="red_color">*</span>:</span></div>
+                <div class="form_textarea_box"><textarea name="text" style="width: 80%; height: 80%; resize: none;"></textarea></div>
+            </div>
+            <div class="form_inner_box">
+                <div class="form_left_box"><span class="form_title">Введите каптчу<span class="red_color">*</span>:</span></div>
+                <div class="form_captcha_text_box"><input name="captcha" type="text" size="20" maxlength="20"></input></div>
+                <div class="form_captcha_image_box"><img src="captcha.php"></div>
+            </div>
+            <div class="form_inner_box">
+                <div class="form_button_box"><button  class="button_style_1" type="submit">Отправить сообщение</button></div>
+            </div>
+            </form>
+        </div>';
+
+        return $html;
     }
 }
