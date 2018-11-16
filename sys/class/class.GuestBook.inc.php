@@ -259,24 +259,54 @@ class GuestBook extends DbConnect {
     public function entry_form(array $post=NULL)
     {
 
-    if(!empty($post['username']))
+    /* ======VALIDATION THEME DISCLAIMER=======
+     * 0) This is only humble opinion of person with a little PHP experience. Here could be mistakes.
+     * 1) My validation includes both latin and cyrillic symbols.
+     * 2) I prefer to use "[.]{1}" or "[s]?" construction instead of "\." and "s?"
+     * 3) Because of really HEATED arguing around validation and regex(regular expressions) theme i _must_ say that
+     * i chose some popular patterns of regex. You may choose another or use filter_var() function.
+     * 4) As i could understand neither filter_var() nor regex are able to completely protect you from XSS injections, but
+     * better to use it than not.
+     * 5) Good luck.
+     *
+     */
+
+    if(isset($post['username']))
     {
-        //echo $post['username'];
-        //проверка $post['username'];
+        if(preg_match('/^[a-zA-Zа-яА-Я0-9]+$/', ''.$post['username'].''))
+        {
+            echo 'Login not empty, passed validation. <br />';
+        }
+        else
+        {
+            echo 'Error. Login must be not emty, consists only letters and numbers.';
+        }
     }
     else
     {
         $post['username']='';
     }
-    if(!empty($post['email']))
+
+
+    if(isset($post['email']))
     {
-        // проверка
+
+        if(preg_match('/^([a-zА-Zа-яА-Я0-9_-]+[.]{1})*[a-zА-Яа-яА-Я0-9_-]+@[a-zA-Zа-яА-Я0-9_-]+([.]{1}[a-zA-Zа-яА-Я0-9_-]+)*[.]{1}[a-zA-Zа-яА-Я]{2,6}$/', ''.$post['email'].''))
+        {
+            echo 'Email not empty, passed validation. <br />';
+        }
+        else
+        {
+            echo 'Error, email is empty or is not a email.';
+        }
     }
     else
     {
         $post['email']='';
     }
-    if(!empty($post['homesite']))
+
+
+    if(isset($post['homesite']))
     {
         //проверка
     }
@@ -284,7 +314,7 @@ class GuestBook extends DbConnect {
     {
         $post['homesite']='';
     }
-    if(!empty($post['text']))
+    if(isset($post['text']))
     {
         // проверка
     }
@@ -292,6 +322,9 @@ class GuestBook extends DbConnect {
     {
         $post['text']='';
     }
+
+
+
 
      // какие у меня есть параметры у _POST?
      // открытые

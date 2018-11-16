@@ -3,13 +3,6 @@ include_once('header.html');
 
 include_once(dirname(__FILE__).'\..\sys\core\init.inc.php');
 
-/*
-if(isset($_POST['username']))
-{
-    echo $_POST['username'];
-}
-*/
-
 
 if(!empty($_GET['current_page'])) {$current_page=$_GET['current_page'];} else {$current_page=0;}
 if(!empty($_GET['sort_type'])) {$sort_type=$_GET['sort_type'];} else {$sort_type='time_and_date';}
