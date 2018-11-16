@@ -3,11 +3,12 @@ include_once('header.html');
 
 include_once(dirname(__FILE__).'\..\sys\core\init.inc.php');
 
+/*
 if(isset($_POST['username']))
 {
     echo $_POST['username'];
 }
-
+*/
 
 
 if(!empty($_GET['current_page'])) {$current_page=$_GET['current_page'];} else {$current_page=0;}
@@ -91,7 +92,7 @@ echo'
         </div>
 ';
 
-echo $guestbook->entry_form();
+echo $guestbook->entry_form($_POST);
 
 echo'
     </div>

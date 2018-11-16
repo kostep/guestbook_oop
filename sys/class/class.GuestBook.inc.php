@@ -1,6 +1,6 @@
 <?php
 
-// This if(!function_exists('__autoload')) is needed for test purposes. Testing each class separately, when init.inc.php
+// This construction: / if(!function_exists('__autoload')) etc / is needed for test purposes. Testing each class separately, when init.inc.php
 // is not included.
 
 if(!function_exists('__autoload'))
@@ -256,26 +256,77 @@ class GuestBook extends DbConnect {
      *
      * @param
      */
-    public function entry_form()
+    public function entry_form(array $post=NULL)
     {
+
+    if(!empty($post['username']))
+    {
+        //echo $post['username'];
+        //проверка $post['username'];
+    }
+    else
+    {
+        $post['username']='';
+    }
+    if(!empty($post['email']))
+    {
+        // проверка
+    }
+    else
+    {
+        $post['email']='';
+    }
+    if(!empty($post['homesite']))
+    {
+        //проверка
+    }
+    else
+    {
+        $post['homesite']='';
+    }
+    if(!empty($post['text']))
+    {
+        // проверка
+    }
+    else
+    {
+        $post['text']='';
+    }
+
+     // какие у меня есть параметры у _POST?
+     // открытые
+     //  $post['username']='';
+     //  $post['email']='';
+     //  $post['homesite']='';
+     //  $post['text']='';
+     // закрытые
+     //  $post['ip']='';
+     //  $post['browser']='';
+     //  $post[''];
+
+
+
+
+
+
         $html='
         <div id="form_entry">
             <form class="form_one" action="index.php" method="post">
             <div class="form_inner_box">
                 <div class="form_left_box"><span class="form_title">Введите имя/псевдоним<span class="red_color">*</span>:</span></div>
-                <div class="form_right_box"><input name="username" type="text" size="40" maxlength="100"></input></div>
+                <div class="form_right_box"><input name="username" type="text" size="40" maxlength="100" value="'.$post['username'].'"></input></div>
             </div>
             <div class="form_inner_box">
                 <div class="form_left_box"><span class="form_title">Введите email<span class="red_color">*</span>:</span></div>
-                <div class="form_right_box"><input name="email" type="text" size="40" maxlength="100"></input></div>
+                <div class="form_right_box"><input name="email" type="text" size="40" maxlength="100" value="'.$post['email'].'"></input></div>
             </div>
             <div class="form_inner_box">
                 <div class="form_left_box"><span class="form_title">Введите Ваш сайт:</span></div>
-                <div class="form_right_box"><input name="homesite" type="text" size="40" maxlength="100"></input></div>
+                <div class="form_right_box"><input name="homesite" type="text" size="40" maxlength="100" value="'.$post['homesite'].'"></input></div>
             </div>
             <div class="form_inner_textarea_box">
                 <div class="form_left_box"><span class="form_title">Введите текст сообщения<span class="red_color">*</span>:</span></div>
-                <div class="form_textarea_box"><textarea name="text" style="width: 80%; height: 80%; resize: none;"></textarea></div>
+                <div class="form_textarea_box"><textarea name="text" style="width: 80%; height: 80%; resize: none;">'.$post['text'].'</textarea></div>
             </div>
             <div class="form_inner_box">
                 <div class="form_left_box"><span class="form_title">Введите каптчу<span class="red_color">*</span>:</span></div>
