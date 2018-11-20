@@ -309,6 +309,7 @@ class GuestBook extends DbConnect {
     if(isset($post['homesite']))
     {
         //проверка
+        preg_match('/^((https?|ftp)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)$/', ''.$post['homesite'].'');
     }
     else
     {
